@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Ventas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .nav-pills .nav-link.active {
+      background-color: #0d6efd;
+    }
+    img.plot {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-4">
+  <h1 class="mb-4 text-center">📊 Dashboard de Análisis de Ventas</h1>
+
+  <!-- Navegación por pestañas -->
+  <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-table-tab" data-bs-toggle="pill" data-bs-target="#pills-table" type="button" role="tab">📄 Datos</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-plots-tab" data-bs-toggle="pill" data-bs-target="#pills-plots" type="button" role="tab">📈 Gráficos</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-3d-tab" data-bs-toggle="pill" data-bs-target="#pills-3d" type="button" role="tab">🌐 Clustering 3D</button>
+    </li>
+  </ul>
+
+  <!-- Contenido de pestañas -->
+  <div class="tab-content" id="pills-tabContent">
+    <!-- Tabla -->
+    <div class="tab-pane fade show active" id="pills-table" role="tabpanel">
+      <div class="table-responsive">
+        {{ table|safe }}
+      </div>
+    </div>
+
+    <!-- Imágenes de gráficas -->
+    <div class="tab-pane fade" id="pills-plots" role="tabpanel">
+      {% for img in images %}
+        <img src="{{ img }}" class="plot" alt="Gráfico generado">
+      {% endfor %}
+    </div>
+
+    <!-- Gráfico 3D Plotly -->
+    <div class="tab-pane fade" id="pills-3d" role="tabpanel">
+        <div id="plotly-3d" style="height:600px;"></div>
+        <script>
+          var fig = {{ plotly_3d | tojson  }};
+          Plotly.newPlot('plotly-3d', fig.data, fig.layout);
+        </script>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
