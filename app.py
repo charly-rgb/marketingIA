@@ -66,6 +66,21 @@ if not os.path.exists("static/bar_plot.html"):
 if not os.path.exists("static/corr_plot.png"):
     create_corr_plot()
 
+@app.route('/predict', methods=['POST'])
+def predict_marketing():
+    texto = request.form.get('input')
+    if not texto:
+        return jsonify({'error': 'No se recibió input'}), 400
+
+    if 'ventas' in texto.lower():
+        mensaje = "🔍 El análisis muestra una tendencia positiva en las ventas."
+    elif 'clientes' in texto.lower():
+        mensaje = "👥 Los clientes están segmentados en 5 grupos principales."
+    else:
+        mensaje = "📊 No se encontró un patrón claro en el análisis."
+
+    return jsonify({'response': mensaje})
+
 @app.route('/')
 def index():
     table_html = df_raw.head(10).to_html(classes='table table-striped table-bordered', border=0, index=False)
